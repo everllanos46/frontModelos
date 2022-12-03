@@ -1536,7 +1536,8 @@ const dataColombia = [
   },
 ];
 
-function Dashboard({ buscador }) {
+function Dashboard({ buscador, info }) {
+  debugger
   const [openDialog, setOpenDialog] = useState(false);
 
   const closeOpenDialog = (state) => {
@@ -1548,105 +1549,73 @@ function Dashboard({ buscador }) {
         component="form"
         noValidate
         autoComplete="off"
-        style={{ width: "80%", maxHeight: "700px" }}
+        style={{ width: "100%", maxHeight: "700px", flexDirection: "row" }}
       >
-        <Grid container spacing={1}>
-          <Grid mt={1} ml={1} item xs={3}>
-            {buscador === "Valledupar" ? (
-              <>
-                {dataValledupar.length > 0 &&
-                  dataValledupar.map((item) => (
-                    <Card variant="outlined" style={{ width: "345px" }}>
-                      <CardActionArea
-                        onClick={() => {
-                          debugger;
-                          closeOpenDialog(true);
-                        }}
-                      >
-                        <CardContent>
-                          <Grid cointainer>
-                            <Grid item>
-                              <Avatar
-                                alt="Remy Sharp"
-                                style={{ width: "15%" }}
-                                src={item.user.profile_image_url}
-                              />
-                              <Typography
-                                sx={{
-                                  fontSize: 14,
-                                  marginLeft: "21%",
-                                  marginTop: "-10%",
-                                }}
-                                color="text.secondary"
-                              >
-                                @{item.user.screen_name}
-                              </Typography>
-                            </Grid>
-                          </Grid>
-                          <Typography mt={3} variant="body2">
-                            {item.text}
+        <Grid container>
+          <Grid
+            mt={1}
+            ml={1}
+            item
+            xs={4}
+            style={{
+              maxHeight: "700px",
+              overflow: "scroll",
+              width: "100px",
+              maxWidth: "380px",
+            }}
+          >
+            {info.length > 0 &&
+              info.map((item) => (
+                <Card variant="outlined" style={{ width: "345px" }}>
+                  <CardActionArea
+                    onClick={() => {
+                      debugger;
+                      closeOpenDialog(true);
+                    }}
+                  >
+                    <CardContent>
+                      <Grid cointainer>
+                        <Grid item>
+                          <Avatar
+                            alt="Remy Sharp"
+                            style={{ width: "15%" }}
+                            src={item.user.profile_image_url}
+                          />
+                          <Typography
+                            sx={{
+                              fontSize: 14,
+                              marginLeft: "21%",
+                              marginTop: "-10%",
+                            }}
+                            color="text.secondary"
+                          >
+                            @{item.user.screen_name}
                           </Typography>
-                        </CardContent>
-                      </CardActionArea>
-                    </Card>
-                  ))}
-              </>
-            ) : (
-              <>
-                {dataColombia.length > 0 &&
-                  dataColombia.map((item) => (
-                    <Card variant="outlined" style={{ width: "345px" }}>
-                      <CardActionArea
-                        onClick={() => {
-                          debugger;
-                          closeOpenDialog(true);
-                        }}
-                      >
-                        <CardContent>
-                          <Grid cointainer>
-                            <Grid item>
-                              <Avatar
-                                alt="Remy Sharp"
-                                style={{ width: "15%" }}
-                                src={item.user.profile_image_url}
-                              />
-                              <Typography
-                                sx={{
-                                  fontSize: 14,
-                                  marginLeft: "21%",
-                                  marginTop: "-10%",
-                                }}
-                                color="text.secondary"
-                              >
-                                @{item.user.screen_name}
-                              </Typography>
-                            </Grid>
-                          </Grid>
-                          <Typography mt={3} variant="body2">
-                            {item.text}
-                          </Typography>
-                        </CardContent>
-                      </CardActionArea>
-                    </Card>
-                  ))}
-              </>
-            )}
+                        </Grid>
+                      </Grid>
+                      <Typography mt={3} variant="body2">
+                        {item.text}
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+              ))}
+            
           </Grid>
-          <Grid item xs={1}>
+          {/* <Grid item xs={1}>
             <Divider
               orientation="vertical"
-              style={{ height: "400%" }}
+              style={{ height: "100%" }}
               flexItem
             />
-          </Grid>
+          </Grid> */}
           <Grid
             item
             xs={8}
             style={{
               height: "300px",
-              marginLeft: "46%",
-              marginTop: "-63%",
-              position: "initial",
+              marginLeft: "36%",
+              marginTop: info.length>0 ? "-50%" : "1%",
             }}
           >
             <ResponsivePie
@@ -1679,11 +1648,8 @@ function Dashboard({ buscador }) {
               arcLabelsTextColor={{ from: "color", modifiers: [["darker", 2]] }}
             />
           </Grid>
-          <div style={{ height: "10%", marginTop: "-33%" }}>
+          <div style={{ height: "10%", marginTop: info.length>0 ? "-25%" : "2%" }}>
             <Map
-              containerElement={
-                <div style={{ height: `250px`, width: "100%" }} />
-              }
               posiciones={dataValledupar[0].place.bounding_box.coordinates}
             />
           </div>

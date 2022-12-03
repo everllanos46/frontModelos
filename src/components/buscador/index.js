@@ -5,23 +5,31 @@ import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import DashBoard from "../dashboard";
+import HistoryModal from "./historial";
 
 function Buscador() {
-  // const [validar, setValidar] = useState(false);
-  // useEffect(async () => {
-  //   if (!validar) {
-  //     const response = await axios.post(
-  //       `http://127.0.0.1:8000/getTweets/Valledupar`,
-  //       null,
-  //       {
-  //         headers: { "Access-Control-Allow-Origin": `*` },
-  //       }
-  //     );
-  //     setValidar(true);
-  //   }
-  // }, []);
+  const [validar, setValidar] = useState(false);
   const [buscadorB, setBuscador] = useState("");
+  const [infoBuscada, setInfoBuscada] = useState([]);
   const [buscadorEnviar, setBuscadorEnviar] = useState("");
+  const [abrirModalHistorial, setAbrirModalHistorial] = useState(false);
+
+  const closeOpenDialog = (state) => {
+    setAbrirModalHistorial(state);
+  };
+  useEffect(() => {
+    async function fetchData() {
+      const response = await axios.post(
+        `http://127.0.0.1:8000/getTweets/${buscadorEnviar}`,
+        null,
+        {
+          headers: { "Access-Control-Allow-Origin": `*` },
+        }
+      );
+      setInfoBuscada(response.data.message);
+    }
+    if (buscadorEnviar !== "") fetchData();
+  }, [buscadorEnviar]);
 
   return (
     <>
@@ -79,10 +87,22 @@ function Buscador() {
             >
               Buscar
             </Button>
+            <Button
+              style={{
+                color: "#FFFFFF",
+                textShadow: "0.1em 0.1em 0.1em black",
+              }}
+              onClick={() => {
+                closeOpenDialog(true);
+              }}
+            >
+              Historial
+            </Button>
           </Grid>
         </Grid>
       </Box>
-      <DashBoard buscador={buscadorEnviar} />
+      <DashBoard buscador={buscadorEnviar} info={infoBuscada} />
+      <HistoryModal open={abrirModalHistorial} onClose={() => closeOpenDialog(false)} />
     </>
   );
 }

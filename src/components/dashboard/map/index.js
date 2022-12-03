@@ -22,12 +22,12 @@ const MapContainer = ({ posiciones }) => {
 
   return (
     <>
-      <div className="map-container" style={{ width: "40%", height: "40%" }}>
+      <div className="map-container" style={{ width: "40%", height: "40%", height: "40%"}}>
         <Map
           style={{
             width: "700px",
             height: "300px",
-            marginLeft: "35%",
+            marginLeft: "39%",
             marginTop: "1%",
           }}
           google={window.google}
