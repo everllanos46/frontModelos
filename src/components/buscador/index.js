@@ -17,6 +17,7 @@ function Buscador() {
   const closeOpenDialog = (state) => {
     setAbrirModalHistorial(state);
   };
+
   useEffect(() => {
     async function fetchData() {
       const response = await axios.post(
@@ -50,6 +51,7 @@ function Buscador() {
               label="Tema interés"
               variant="outlined"
               size="small"
+              value={buscadorB}
               onChange={(value) => {
                 setBuscador(value.target.value);
               }}
@@ -102,7 +104,7 @@ function Buscador() {
         </Grid>
       </Box>
       <DashBoard buscador={buscadorEnviar} info={infoBuscada} />
-      <HistoryModal open={abrirModalHistorial} onClose={() => closeOpenDialog(false)} />
+      <HistoryModal open={abrirModalHistorial} onClose={() => closeOpenDialog(false)} searchedText={setBuscador} searchedToSend={setBuscadorEnviar} />
     </>
   );
 }

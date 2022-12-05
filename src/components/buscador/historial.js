@@ -1,20 +1,27 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Dialog, DialogContent, DialogTitle } from "@mui/material";
+import Tooltip from "@mui/material/Tooltip";
+import IconButton from "@mui/material/IconButton";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-const HistoryModal = ({ open, onClose }) => {
+const HistoryModal = ({ open, onClose, searchedText, searchedToSend }) => {
   const [infoBuscada, setInfoBuscada] = useState([]);
 
   const columns = [
-    { id: "code", label: "Code", width: 100 },
-    { id: "name", label: "Name", width: 100 },
+    { id: "code", label: "Code", width: 150 },
+    { id: "name", label: "Name", width: 150 },
+    {
+      id: "actions",
+      label: "Acciones",
+      width: 150,
+    },
   ];
 
   useEffect(() => {
@@ -31,6 +38,12 @@ const HistoryModal = ({ open, onClose }) => {
     if (open) getHistory();
   }, [open]);
 
+  const loadHistoryItem = (item) => {
+    searchedText(item);
+    searchedToSend(item);
+    onClose();
+  }
+
   return (
     <>
       <Dialog
@@ -38,13 +51,12 @@ const HistoryModal = ({ open, onClose }) => {
         open={open}
         onClose={onClose}
         fullWidth
-        maxWidth="xs"
-        style={{ height: "500px" }}
+        maxWidth="sm"
       >
         <DialogTitle>Historial</DialogTitle>
         <DialogContent>
-          <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableContainer sx={{ maxHeight: 440 }}>
+            <Table stickyHeader aria-label="sticky table">
               <TableHead>
                 <TableRow>
                   {columns.map((column) => (
@@ -65,13 +77,24 @@ const HistoryModal = ({ open, onClose }) => {
                       key={row.code}
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     >
-                        <TableCell component="th" scope="row">
+                      <TableCell component="th" scope="row">
                         {row.code}
                       </TableCell>
                       <TableCell component="th" scope="row">
                         {row.name}
                       </TableCell>
-                      <TableCell>{row.calories}</TableCell>
+                      <TableCell>
+                        {" "}
+                        <Tooltip title="Cargar">
+                          <IconButton
+                            onClick={() => loadHistoryItem(row.name)}
+                            aria-label="delete"
+                            size="large"
+                          >
+                            <ArrowBackIcon fontSize="inherit" />
+                          </IconButton>
+                        </Tooltip>
+                      </TableCell>
                     </TableRow>
                   ))}
               </TableBody>
